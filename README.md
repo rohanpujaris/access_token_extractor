@@ -38,5 +38,5 @@ def MyModule
 end
 ```
 
-In above example access token can be retrived as conn.private.token. where conn is Plug.Conn struct
+In above example access token can be retrived as `conn.private.token` where conn is `Plug.Conn` struct
 
