@@ -39,10 +39,18 @@ defmodule AccessTokenExtractor do
 
   @spec call(Plug.t, atom) :: Plug.t
   def call(conn, key) do
-    access_token = conn.params["access_token"] ||
-      get_req_header(conn, "authorization")
+    access_token = if conn.params["access_token"] do
+      conn.params["access_token"]
+    else
+      auth_header = get_req_header(conn, "authorization")
         |> to_string
-        |> String.replace("Token token=", "")
+        |> String.split("=")
+        |> Enum.map(&(String.strip &1))
+      case auth_header do
+        [_, access_token] -> access_token
+        _ -> ""
+      end
+    end
     if access_token != "" do
       conn = put_private(conn, key, access_token)
     end

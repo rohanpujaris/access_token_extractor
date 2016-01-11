@@ -11,7 +11,6 @@ defmodule AccessTokenExtractorTest do
     conn = conn(:get, "/")
       |> put_req_header("authorization", "Token token=abc")
       |> call
-    IO.inspect conn.private
     assert conn.private.access_token == "abc"
   end
 
@@ -22,6 +21,18 @@ defmodule AccessTokenExtractorTest do
     assert conn.private.token == "abc"
     conn = call conn(:get, "/?access_token=abc"), :token
     assert conn.private.token == "abc"
+  end
+
+  test "accepts spaces before and after equal to in authorization header" do
+    conn = conn(:get, "/")
+      |> put_req_header("authorization", "Token token = abc")
+      |> call
+    assert conn.private.access_token == "abc"
+  end
+
+  test "no key access_token is present in private map if no access_token is passed" do
+    conn = conn(:get, "/")
+    refute Map.has_key?(conn.private, :access_token)
   end
 
   defp parser_plug(conn) do

@@ -3,7 +3,7 @@ defmodule AccessTokenExtractor.Mixfile do
 
   def project do
     [app: :access_token_extractor,
-     version: "0.1.0",
+     version: "0.1.1",
      description: description,
      package: packages,
      elixir: "~> 1.1",
@@ -27,7 +27,7 @@ defmodule AccessTokenExtractor.Mixfile do
 
   defp description do
     """
-    Simple Plug to extract access_token from request and add it to private map in Plug.Conn struct
+    Simple Plug to extract access_token from request and add it to private map in Plug.Conn struct.
     """
   end
 
